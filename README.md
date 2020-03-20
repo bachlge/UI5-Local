@@ -2,7 +2,7 @@
 
 1. create a new project by downloading a starter (Vaadin 15, Spring Boot)
 2. npm install @ui5/webcomponents
-3. create a java wrapper for a component:
+3. create a java wrapper for a UI5-component:
 
 ```
 @Tag("ui5-switch")
@@ -85,7 +85,7 @@ __webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
 (anonymous) @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:202
 ```
 
-7. app works as expected if the com.vaadin artifactId is changed to vaadin-core
+7. workaround: app works as expected if the com.vaadin artifactId is changed to vaadin-core
 
 ```
         <dependency>
