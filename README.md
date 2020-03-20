@@ -4,15 +4,12 @@
 2. npm install @ui5/webcomponents
 3. create a java wrapper for a component:
 
+```
 @Tag("ui5-switch")
 @JsModule("@ui5/webcomponents/dist/Switch.js")
 public class Ui5Switch extends Component {
 
-```
-	private static final Logger LOGGER = LoggerFactory.getLogger(Ui5Switch.class);
-
 	public Ui5Switch() {
-		LOGGER.info("constructor ...");
 		this.getElement().setProperty("textOn", "Yes");
 		this.getElement().setProperty("textOff", "No");
 	}
