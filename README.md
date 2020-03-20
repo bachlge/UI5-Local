@@ -1,4 +1,4 @@
-# Demo Project to show a strange behaviour and the workaround
+# Vaadin 15 Demo Project to show a strange behaviour and the workaround
 
 1. create a new project by downloading a starter (Vaadin 15, Spring Boot)
 2. npm install @ui5/webcomponents
