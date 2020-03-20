@@ -20,8 +20,9 @@ public class Ui5Switch extends Component {
 4. create a view using the component
 
 ```
+import com.gork.ui5.test.elements.Ui5Switch;
+
 @Route
-@CssImport("./styles/styles.css")
 public class MainView extends VerticalLayout {
 
     public MainView() {
