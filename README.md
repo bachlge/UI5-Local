@@ -1,56 +1,99 @@
-# Project Base for Vaadin and Spring Boot
+# Demo Project to show a strange behaviour and the workaround
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+1. create a new project by downloading a starter (Vaadin 15, Spring Boot)
+2. npm install @ui5/webcomponents
+3. create a java wrapper for a component:
 
-The best way to create your own project based on this starter is [start.vaadin.com](https://start.vaadin.com/) - you can get only the necessary parts and choose the package naming you want to use.
+@Tag("ui5-switch")
+@JsModule("@ui5/webcomponents/dist/Switch.js")
+public class Ui5Switch extends Component {
 
-## Running the Application
+```
+	private static final Logger LOGGER = LoggerFactory.getLogger(Ui5Switch.class);
 
-Import the project to the IDE of your choosing as a Maven project.
+	public Ui5Switch() {
+		LOGGER.info("constructor ...");
+		this.getElement().setProperty("textOn", "Yes");
+		this.getElement().setProperty("textOff", "No");
+	}
 
-Run the application using `mvn spring-boot:run` or by running the `Application` class directly from your IDE.
+}
+```
 
-Open http://localhost:8080/ in your browser.
+4. create a view using the component
 
-If you want to run the application locally in the production mode, run `mvn spring-boot:run -Pproduction`.
+```
+@Route
+@CssImport("./styles/styles.css")
+public class MainView extends VerticalLayout {
 
-To run Integration Tests, execute `mvn verify -Pintegration-tests`.
+    public MainView() {
 
-### Live Reload (optional)
+    	Ui5Switch ui5switch = new Ui5Switch();
 
-With live reload, you can see the results of your code changes immediately. 
-When you edit your Java code and recompile it, the application changes will be automatically reloaded and the browser is refreshed.
-This is done by leveraging [Spring Boot Developer Tools](https://docs.spring.io/spring-boot/docs/2.1.5.RELEASE/reference/html/using-boot-devtools.html). 
-To be able to see the changes in the browser tab, the page still needs to be reloaded. 
-That can also  be automated via a LiveReload browser extension. 
-One such extension for Google Chrome is [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei). 
-In Firefox, [LiveReload - Web extension](https://addons.mozilla.org/en-US/firefox/addon/livereload-web-extension/) can be used.
-You can find such similar extensions for other major browsers too.
-These extensions add an icon to your browser next to the address bar.
-To enable the extension, you should click that icon after you opened your application. 
+        add(ui5switch);
+    }
 
-You can find more information at [Live Reload in Spring Boot Applications](https://vaadin.com/docs/flow/workflow/tutorial-spring-boot-live-reload.html) document.
+}
+```
 
-## Structure
+5. run
 
-Vaadin web applications are full-stack and include both client-side and server-side code in the same project.
+the application will compile without any errors
+in the browser, however, an empty screen will be presented
 
-| Directory | Description |
-| :--- | :--- |
-| `frontend/` | Client-side source directory |
-| &nbsp;&nbsp;&nbsp;&nbsp;`index.html` | HTML template |
-| &nbsp;&nbsp;&nbsp;&nbsp;`index.ts` | Frontend entrypoint |
-| &nbsp;&nbsp;&nbsp;&nbsp;`main-layout.ts` | Main layout Web Component (optional) |
-| &nbsp;&nbsp;&nbsp;&nbsp;`views/` | UI views Web Components (TypeScript / HTML) |
-| &nbsp;&nbsp;&nbsp;&nbsp;`styles/` | Styles directory (CSS) |
-| `src/main/java/<groupId>/` | Server-side source directory |
-| &nbsp;&nbsp;&nbsp;&nbsp;`Application.java` | Server entrypoint |
-| &nbsp;&nbsp;&nbsp;&nbsp;`AppShell.java` | application-shell configuration |
+6. Console shows one error
 
-## More Information
+```
+Utilities.js?ac76:2635 Uncaught (in promise) TypeError: Cannot set property 'highcharts' of undefined
+    at eval (Utilities.js?ac76:2635)
+    at Module.../node_modules/.pnpm/registry.npmjs.org/highcharts/6.1.4/node_modules/highcharts/js/es-modules/parts/Utilities.js (vaadin-0-3e06bc81abb8f68f7130.cache.js:6008)
+    at __webpack_require__ (vaadin-bundle-be22a6ca42c2827921a5.cache.js:64)
+    at eval (SvgRenderer.js?51ad:1)
+    at Module.../node_modules/.pnpm/registry.npmjs.org/highcharts/6.1.4/node_modules/highcharts/js/es-modules/parts/SvgRenderer.js (vaadin-0-3e06bc81abb8f68f7130.cache.js:5948)
+    at __webpack_require__ (vaadin-bundle-be22a6ca42c2827921a5.cache.js:64)
+    at eval (highcharts.src.js?929e:1)
+    at Module.../node_modules/.pnpm/registry.npmjs.org/highcharts/6.1.4/node_modules/highcharts/js/es-modules/masters/highcharts.src.js (vaadin-0-3e06bc81abb8f68f7130.cache.js:4880)
+    at __webpack_require__ (vaadin-bundle-be22a6ca42c2827921a5.cache.js:64)
+    at eval (highstock.src.js?93ac:1)
+eval @ Utilities.js?ac76:2635
+../node_modules/.pnpm/registry.npmjs.org/highcharts/6.1.4/node_modules/highcharts/js/es-modules/parts/Utilities.js @ vaadin-0-3e06bc81abb8f68f7130.cache.js:6008
+__webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
+eval @ SvgRenderer.js?51ad:1
+../node_modules/.pnpm/registry.npmjs.org/highcharts/6.1.4/node_modules/highcharts/js/es-modules/parts/SvgRenderer.js @ vaadin-0-3e06bc81abb8f68f7130.cache.js:5948
+__webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
+eval @ highcharts.src.js?929e:1
+../node_modules/.pnpm/registry.npmjs.org/highcharts/6.1.4/node_modules/highcharts/js/es-modules/masters/highcharts.src.js @ vaadin-0-3e06bc81abb8f68f7130.cache.js:4880
+__webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
+eval @ highstock.src.js?93ac:1
+../node_modules/.pnpm/registry.npmjs.org/highcharts/6.1.4/node_modules/highcharts/js/es-modules/masters/highstock.src.js @ vaadin-0-3e06bc81abb8f68f7130.cache.js:4892
+__webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
+eval @ vaadin-chart.js?281b:1
+../node_modules/.pnpm/registry.npmjs.org/@vaadin/vaadin-charts/6.2.4/node_modules/@vaadin/vaadin-charts/src/vaadin-chart.js @ vaadin-0-3e06bc81abb8f68f7130.cache.js:1619
+__webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
+eval @ vaadin-chart.js?a98e:1
+../node_modules/.pnpm/registry.npmjs.org/@vaadin/vaadin-charts/6.2.4/node_modules/@vaadin/vaadin-charts/vaadin-chart.js @ vaadin-0-3e06bc81abb8f68f7130.cache.js:1655
+__webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
+eval @ generated-flow-imports.js?b518:1
+../target/frontend/generated-flow-imports.js @ vaadin-1-e61d3eb5ec3d7ab42ccc.cache.js:184
+__webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
+Promise.catch (async)
+render @ vaadin-router.js?700d:1812
+__onNavigationEvent @ vaadin-router.js?700d:2231
+setRoutes @ vaadin-router.js?700d:1714
+eval @ index.ts?5b66:14
+./index.ts @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:236
+__webpack_require__ @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:64
+(anonymous) @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:199
+(anonymous) @ vaadin-bundle-be22a6ca42c2827921a5.cache.js:202
+```
 
-- [Vaadin Flow](https://vaadin.com/flow) documentation
-- [Using Vaadin and Spring](https://vaadin.com/docs/v14/flow/spring/tutorial-spring-basic.html) article
-- [Quick Start Guide](https://vaadin.com/docs/v15/flow/typescript/quick-start-guide.html for Vaadin applications.
+7. app works as expected if the com.vaadin artifactId is changed to vaadin-core
 
+```
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <!-- Replace artifactId with vaadin-core to use only free components -->
+            <artifactId>vaadin</artifactId>
+        </dependency>
+```
